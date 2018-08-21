@@ -74,7 +74,7 @@
         redirect: to => {
           //hash就是#后面 query就是?后面的 params匹配/:id
           const { hash, params, query } = to
-          console.log(to)
+          // console.log(to)
           if (query.to === 'foo') {
             return { path: '/foo', query: null }
           }
@@ -98,7 +98,6 @@
       { path: '*', redirect: '/' },
     ]
   })
-
   new Vue({
     router,
   }).$mount('#app')
