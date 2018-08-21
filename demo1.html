@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+  <title>Document</title>
+</head>
+<body>
+  <!-- 动态路由匹配 -->
+  <div id="app">
+      <h1>Hello App!</h1>
+      <p>
+        <!-- 使用 router-link 组件来导航. -->
+        <!-- 通过传入 `to` 属性指定链接. -->
+        <!-- <router-link> 默认会被渲染成一个 `<a>` 标签 -->
+        <router-link to="/foo">Go to Foo</router-link>
+        <router-link to="/bar">Go to Bar</router-link>
+        <router-link to="/user/1">Go to User</router-link>
+      </p>
+      <!-- 路由出口 -->
+      <!-- 路由匹配到的组件将渲染在这里 -->
+      <router-view></router-view>
+    </div>
+
+</body>
+<script>
+  //   /user/:username 匹配路径：/user/evan .$route.params:{username:'evan'}
+  //   /user/:username/post/:post_id  匹配路径： user/evan/post/123  $route.params:{username:'evan',post_id:123}
+  //   除了$route.params外，$route对象还提供了其它有用的信息。如$route.query(如果URL中有查询参数)/ $route.hash等等。
+
+    const User ={template:'<div>User{{ $route.params}}</div>'}
+    const Foo = { template: '<div>foo</div>' }
+    const Bar = { template: '<div>bar</div>' }
+    const routes = [
+      { path: '/foo', component: Foo },
+      { path: '/bar', component: Bar },
+      {path:'/user/:id',component:User}
+    ]
+    const router = new VueRouter({
+      routes
+    })
+  const app = new Vue({
+    router
+  }).$mount('#app')
+  
+  </script>
+</html>
