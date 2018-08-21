@@ -23,16 +23,31 @@
                           </div>`};
   const UserProfile ={template:`<div>123</div>`};
   const UserPosts ={template:`<div>456</div>`};
+  const abc ={template:`<div>789</div>`};
   const routes = [
       {path:'/user/:id',component:User,
         children:[
-          //当user/:id匹配成功，UserProfile会被渲染在User的<router-view>中
+          //当user/:id匹配成功，UserProfile会被渲染在User的<router-view>中.以/开头的嵌套路径会被当做根路径。当你访问 /user/foo 时，User 的出口是不会渲染任何东西，这是因为没有匹配到合适的子路由。如果你想要渲染点什么，可以提供一个 空的 子路由： -->
           {
             path:'',
             component: UserProfile
           },
+          // /user/posts返回结果是123，
           {
             path:'posts',
+            component: UserPosts
+          },
+          {
+            path:':username',
+            component: abc
+          },
+          {
+            path:'ad',
+            component: UserPosts
+          },
+         // /user/posts/cb返回结果还是789
+          {
+            path:'cb',
             component: UserPosts
           },
         ]
