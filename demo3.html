@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+  <title>Document</title>
+</head>
+<body>
+  <!-- 
+    除了使用<router-link>创建a标签来定义导航链接，我们还可以借助router的实例方法，通过编写代码实现。
+    router.push(location,onComplete?,onAbort?)
+    注意:在Vue实例内部，你可以通过$router访问路由实例。因此你可以调用this.$router.push.
+    想要导航到不同的URL，则使用router.push方法。这个方法会向history栈添加一个新的记录，所以当用户点击浏览器回退按钮时，则回到之前的URL。
+    当你点击<router-link>时，这个方法会内部调用，所以说，等同于router.push()。
+    声明式：<router-link :to="...">
+    编程式：router.oush(...);
+   -->
+   <div id="app">
+      <div @click=abc>点我</div>
+   </div>
+</body>
+<script>
+  // 该方法的参数可以是一个字符串路径，或则一个描述地址的对象。
+  //字符串
+  // router.push('home');
+  // //对象
+  // router.push({path:'home'});
+  // //命名路由
+  // router.push({name:'home',params:{userId:123}});
+  // //带查询参数，变成/register?plan=private
+  // router.push({path:'register',query:{plan:'private'}});
+  //注意：如果提供了path,params会被忽略。
+  // const userId = 123;
+  // router.push({name:'user',params:{userId}});// /user/123;
+  // router.push({path:`/user/${userId}`})// /user/123
+  // router.push({path:'/user',params:{userId}})// /user
+
+  //可选的在 router.push 或 router.replace 中提供 onComplete 和 onAbort 回调作为第二个和第三个参数。这些回调将会在导航成功完成 (在所有的异步钩子被解析之后) 或终止 (导航到相同的路由、或在当前导航完成之前导航到另一个不同的路由) 的时候进行相应的调用。
+  //如果目的地和当前路由相同，只有参数发生了改变 (比如从一个用户资料到另一个 /users/1 -> /users/2)，你需要使用 beforeRouteUpdate 来响应这个变化 (比如抓取用户信息)。
+</script>
+</html>
