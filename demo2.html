@@ -12,7 +12,7 @@
   <!-- 嵌套路由 -->
   <div id="app">
       <!-- //要注意，以/开头的嵌套路径会被当做根路径。这让你充分的使用嵌套路由组件而无需设置嵌套的路径。当你访问 /user/foo 时，User 的出口是不会渲染任何东西，这是因为没有匹配到合适的子路由。如果你想要渲染点什么，可以提供一个 空的 子路由： -->
-    <router-link to="/user/">Go User</router-link>
+    <router-link to="/user/1">Go User</router-link>
     <router-view></router-view>
   </div>
 </body>
