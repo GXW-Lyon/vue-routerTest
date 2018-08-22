@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+  <title>Document</title>
+</head>
+<body>
+  <!-- <div id="app">
+      <foo-component :foo="foo" :boo="boo":coo="coo":doo="doo"></foo-component>
+  </div> -->
+</body>
+<!-- <script>
+  // vm.$attrs包含了父作用域中不作为prop被识别的特性绑定。当一个组件没有声明任何prop时，这里会包含所有父作用域的绑定(class和style除外)，并且可以通过v-bind="$attrs"传入内部组件。
+      var fooComponent={
+        props:['foo'],
+        template:`<div><div>{{$attrs}}</div> <p>{{foo}}</p></div>`
+      };
+      var vm = new Vue({
+        components:{
+          'foo-component':fooComponent,
+        },
+        el:'#app',
+        data:{
+          foo: 'Hello World!',
+          boo: 'Hello Javascript!',
+          coo: 'Hello Vue',
+          doo: 'Last'
+        }
+      })
+</script> -->
+
+<!-- $attrs -->
+<!-- demo.vue -->
+<template>
+  <div>
+    <child-com :foo="foo" :boo="boo" :coo="coo" :doo="doo"></child-com>
+  </div>
+</template>
+<script>
+  const childCom=()=>import('./childCom1.vue');
+  export default{
+    data(){
+      return {
+        foo: 'Hello World!',
+        boo: 'Hello Javascript!',
+        coo: 'Hello Vue',
+        doo: 'Last'
+      }
+    },
+    components:{childCom}
+  }
+</script>
+
+<!-- childCom1 -->
+<template>
+  <div>
+    <p>foo:{{foo}}</p>
+    <p>attrs:{{$attrs}}</p>
+    <child-com2 v-bind="$attrs"></child-com2>
+  </div>
+</template>
+<script>
+  const childCom2=()=>import('./childCom2.vue');
+  export default{
+    props:['foo'],// foo作为props属性绑定
+    inheritAttrs:false,
+    created () {
+      console.log(this.$attrs)// { boo: 'Hello Javascript!', coo: 'Hello Vue', doo: 'Last' }
+    }
+  }
+</script>
+
+<!-- childCom2.vue -->
+<template>
+  <div>
+    <p>boo:{{boo}}</p>
+    <p>attrs:{{$attrs}}</p>
+    <child-com3 v-bind="$attrs"></child-com3>
+  </div>
+</template>
+<script>
+  const childCom3=()=>import('./childCom3.vue');
+  export default{
+    props:['boo'],// boo作为props属性绑定
+    inheritAttrs:false,
+    created(){
+      console.log(this.$attrs); // { coo: 'Hello Vue', doo: 'Last' }
+    }
+  }
+</script>
+
+
+
+
+
+
+
+
+<!-- inheritAttrs  在版本 2.4 之前，默认情况下父作用域的不被作为props特性绑定的属性，将会作为普通的 HTML 属性，应用在跟元素上。-->
+
+<!-- parent.vue -->
+<template>
+  <child-commpent :foo="f" :boo="b"></child-commpent>
+</template>
+<script>
+  const childComment =()=>import('./childCom.vue');
+  export default{
+    data(){
+      return {
+        f: 'Hello world!',
+        b: 'Hello Vue!'
+      }
+    }
+  }
+</script>
+
+<!-- childComment.vue -->
+<template>
+  <div>{{foo}}</div>
+</template>
+<script>
+  export default{
+    props:['foo']//父作用域的boo不被作为props绑定
+  }
+</script>
+<!-- //boo会作为普通的 HTML 属性，应用在跟元素上。
+<divboo="Hello Vue!">Hello world!</div> -->
+
+<!-- 设置interitAttrs为false，不会应用到跟元素上 -->
+<template>
+    <div>{{ foo }}</div>
+</template>
+
+<script>
+  export default {
+    props: ['foo'],
+    inheritAttrs: false
+  }
+</script>
+<!-- //boo会作为普通的 HTML 属性，应用在跟元素上。
+<div>Hello world!</div> -->
+
+</html>
