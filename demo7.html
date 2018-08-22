@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+  <title>Document</title>
+</head>
+<body>
+  <!-- vue的props和$attrs 以及复习组件之间的传值。
+父组件向子组件传值。
+      父组件结构：
+      <template>
+        <div>
+          <v-girl-group :girls="aGirls"></v-girl-group>
+        </div>
+      </template>
+      <script>
+        import vGirlGroup from './GirlGroup';
+        export default{
+          name:'girl',
+          components:{vGirlGroup},
+          data(){
+            retrun {
+              aGirls:[
+                {name:'小丽',age:22},
+                {name:'小美',age:23},
+                {name:'小小',age:21},
+              ]
+            }
+          }
+        }
+      </script>
+注意点：子组件的拼写方式：vGirlGroup写成v-girl-group;
+        这里子组件中绑定数据是:girls="aGirls",这里的aGirls数据是父组件中的data，girls是要传递至子组件的属性。
+   -->
+   <!-- 
+     子组件结构
+     <template>
+       <div>
+         <ul>
+           <li v-for="(value,index) in girls">{{index}}-{{value.name}}-{{value.age}}</li>
+         </ul>
+       </div>
+     </template>
+
+     <script>
+       export default{
+         name:'girl-group',
+         props:{
+           girls:{
+             type:Array,
+             required:true
+           }
+         }
+       }
+     </script>
+    -->
+
+    <!-- 父组件调用子组件的方法
+      <template>
+        <div>
+          <h1>我是父组件</h1>
+          <child ref="child"></child>
+        </div>
+      </template>
+      <script>
+        import child from './child'
+        export default{
+          components:{child},
+          methods:{
+            parent(){
+              this.$refs.child.childFn();
+            }
+          }
+        }
+      </script>
+
+      子组件
+      <template>
+        <div>
+          <h2>我是子组件</h2>
+        </div>
+      </template>
+      <script>
+        export default{
+          methods:{
+            childFn(){
+              alert('父组件调用了我')
+            }
+          }
+        }
+      </script>
+    -->
+
+    <div id="app">
+      <foo-component :foo-message="fooMessage"></foo-component>
+      <defaults :msg="msg"></defaults> 
+      <requireds :remsg="remsg"></requireds> 
+      <typess :tymsg="tymsg"></typess>
+      <redeqf :redemsg="redemsg"></redeqf>
+      <validators :validmsg="validmsg"></validators>
+    </div>
+
+    <script>
+      var fooComponent={
+        props:{
+          //当type的类型为Array或者Object的时候default必须是一个函数：
+          fooMessage:{
+            type:Array,
+            default:function(){
+              return ['foo','bar'];
+            }
+          }
+        },
+        template:'<div>{{fooMessage}}</div>'
+      };
+
+      var defaults = {
+        //使用default选项来指定当父组件未传入参数时props变量的默认值：
+        props:{
+          msg:{
+            type:Number,
+            default:128
+          }
+        },
+        template:'<div>{{msg}}</div>'
+      }
+
+      var requireds = {
+        //可以使用required选项来声明这个参数是否必须传入。
+        props:{
+          remsg:{
+            type:Number,
+            required:true
+          }
+        },
+        template:'<div>{{remsg}}</div>'
+      }
+
+      var typess = {
+        props:{
+          tymsg:[Number,String]
+        },
+        template:'<div>{{tymsg}}</div>'
+      }
+
+      var redeqf = {
+        props:{
+          redemsg:{
+            type:Number,
+            required:true,
+            default:128
+          }
+        },
+        template:'<div>{{redemsg}}</div>'
+      }
+
+      var validators = {
+        //当校验规则很复杂，默认提供的校验规则无法满足的时候可以使用自定义函数来校验。
+        props:{
+          validmsg:{
+            validator:function(value){
+              return value>=0&&value<=128;
+            }
+          }
+        },
+        template:'<div>{{validmsg}}</div>'
+      }
+
+      var vm = new Vue({
+        components:{
+          'foo-component':fooComponent,
+          'defaults':defaults,
+          'requireds':requireds,
+          'typess':typess,
+          'redeqf':redeqf,
+          'validators':validators
+        },
+        el:'#app',
+        data:{
+          fooMessage:['f','o','o'],
+          msg:256,
+          remsg:789,
+          tymsg:'110',
+          redemsg:120,
+          validmsg:100
+        }
+      })
+    </script>
+    <!-- //Vue的props校验只是提供一个参考，并不是强制性的。 -->
+
+    <!-- 
+      props:{
+        //fooA只接受数值类型的参数
+        fooA:Number,
+        //fooB可以接受字符串和数值类型的参数
+        fooB:[String,Number]
+        //fooC可以接受字符串类型的参数，并且这个参数必须传入
+        fooC:{
+          type:String,
+          required:true
+        },
+        //fooD接受数值类型的参数，如果不传入的话默认就是100
+        fooD:{
+          type:Number,
+          default:100
+        }
+        //fooE接受对象类型的参数
+        fooE:{
+          type:Object,
+          //当为对象类型设置默认值时必须使用函数返回
+          default:function(){
+            return {message:'Hello,world'}
+          }
+        }
+        //fooF使用一个自定义的验证器
+        fooF:{
+          validator:function(value){
+            return value>=0&&value<=100;
+          }
+        }
+      }
+     -->
+</body>
+</html>
